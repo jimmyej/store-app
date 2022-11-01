@@ -15,6 +15,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
+    private static final String ACTIVE = "Active";
+    private static final String INACTIVE = "Inactive";
 
     @Autowired
     private ProductService service;
@@ -88,13 +90,13 @@ public class ProductController {
         try {
             List<Product> activeProducts = service.getActiveProducts(isActive);
             if (activeProducts.isEmpty()) {
-                log.warn("{} products not found", isActive?"Active":"Inactive");
+                log.warn("{} products not found", isActive?ACTIVE:INACTIVE);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            log.info("{} products found", isActive?"Active":"Inactive");
+            log.info("{} products found", isActive?ACTIVE:INACTIVE);
             return new ResponseEntity<>(activeProducts, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error while getting {} products", isActive?"Active":"Inactive");
+            log.error("Error while getting {} products", isActive?ACTIVE:INACTIVE);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
