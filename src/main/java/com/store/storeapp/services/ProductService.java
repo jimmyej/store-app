@@ -3,12 +3,13 @@ package com.store.storeapp.services;
 import com.store.storeapp.entities.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
     List<Product> getProducts();
-    Product getProductById(Integer id);
+    Optional<Product> getProductById(Integer id);
     Product createProduct(Product product);
     Product updateProduct(Product product);
-    boolean deleteProduct(Integer id);
+    void deleteProductById(Integer id);
     List<Product> getActiveProducts(boolean isActive);
 }

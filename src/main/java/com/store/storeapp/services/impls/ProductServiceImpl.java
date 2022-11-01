@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -18,8 +19,8 @@ public class ProductServiceImpl implements ProductService {
         return repository.findAll();
     }
 
-    public Product getProductById(Integer id) {
-        return repository.findById(id).get();
+    public Optional<Product> getProductById(Integer id) {
+        return repository.findById(id);
     }
 
     public Product createProduct(Product product) {
@@ -31,15 +32,9 @@ public class ProductServiceImpl implements ProductService {
         return exists ? repository.save(product) : null;
     }
 
-    public boolean deleteProduct(Integer id) {
-        boolean deleted = false;
-        try {
-            repository.deleteById(id);
-            deleted = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return deleted;
+    public void deleteProductById(Integer id) {
+        boolean exists = repository.existsById(id);
+        if(exists) repository.deleteById(id);
     }
 
     public List<Product> getActiveProducts(boolean isActive) {
