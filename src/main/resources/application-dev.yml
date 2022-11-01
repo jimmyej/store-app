@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://storedb-host-dev:5432/postgres
+    username: postgres
+    password: nfghfgh567dfg4
+
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        default_schema: storedb
+

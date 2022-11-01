@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://agrodb-host-prod:5432/postgres
+    username: postgres
+    password: weasfgfh54625
+
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: validate
+        default_schema: storedb
+
