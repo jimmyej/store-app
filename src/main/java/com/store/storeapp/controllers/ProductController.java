@@ -24,13 +24,13 @@ public class ProductController {
         try{
             List<Product> products = service.getProducts();
             if (products.isEmpty()) {
-                log.warn("Data not found");
+                log.warn("Products not found");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            log.info("Data found");
+            log.info("Products found");
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Server error");
+            log.error("Error while getting products");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -39,10 +39,10 @@ public class ProductController {
     ResponseEntity<Product> getProductById(@PathVariable Integer id){
         Optional<Product> product = service.getProductById(id);
         if (product.isPresent()) {
-            log.info("Data found");
+            log.info("Product {} found", id);
             return new ResponseEntity<>(product.get(), HttpStatus.OK);
         } else {
-            log.warn("Data not found");
+            log.warn("Product {} not found", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -54,7 +54,7 @@ public class ProductController {
             log.info("Product created");
             return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
         } catch (Exception e) {
-            log.error("Server error");
+            log.error("Error while creating product");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,10 +63,10 @@ public class ProductController {
     ResponseEntity<Product> updateProduct(@RequestBody Product product){
         try {
             Product newProduct = service.updateProduct(product);
-            log.info("Product updated");
+            log.info("Product {} updated", product.getId());
             return new ResponseEntity<>(newProduct, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Server error");
+            log.error("Error while updating product {}", product.getId());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -75,10 +75,10 @@ public class ProductController {
     ResponseEntity<HttpStatus> deleteProduct(@PathVariable Integer id){
         try {
             service.deleteProductById(id);
-            log.info("Product deleted");
+            log.info("Product {id} deleted", id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            log.error("Server error");
+            log.error("Error while deleting product {}", id);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -88,13 +88,13 @@ public class ProductController {
         try {
             List<Product> activeProducts = service.getActiveProducts(isActive);
             if (activeProducts.isEmpty()) {
-                log.warn("Data not found");
+                log.warn("{} products not found", isActive?"Active":"Inactive");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            log.info("Data found");
+            log.info("{} products found", isActive?"Active":"Inactive");
             return new ResponseEntity<>(activeProducts, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Server error");
+            log.error("Error while getting {} products", isActive?"Active":"Inactive");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
