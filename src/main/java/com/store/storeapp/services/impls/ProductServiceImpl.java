@@ -32,9 +32,17 @@ public class ProductServiceImpl implements ProductService {
         return exists ? repository.save(product) : null;
     }
 
-    public void deleteProductById(Integer id) {
-        boolean exists = repository.existsById(id);
-        if(exists) repository.deleteById(id);
+    public boolean deleteProductById(Integer id) {
+        boolean deleted = false;
+        try{
+            boolean exists = repository.existsById(id);
+            if(exists) repository.deleteById(id);
+            deleted = true;
+        } catch(RuntimeException e){
+            e.printStackTrace();
+        }
+
+        return deleted;
     }
 
     public List<Product> getActiveProducts(boolean isActive) {
