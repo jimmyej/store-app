@@ -10,6 +10,6 @@ public interface ProductService {
     Optional<Product> getProductById(Integer id);
     Product createProduct(Product product);
     Product updateProduct(Product product);
-    void deleteProductById(Integer id);
+    boolean deleteProductById(Integer id);
     List<Product> getActiveProducts(boolean isActive);
 }
