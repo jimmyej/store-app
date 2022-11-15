@@ -1,15 +1,15 @@
-package com.store.storeapp.services.impls;
+package com.store.storeapp.services;
 
 import com.store.storeapp.entities.Product;
 import com.store.storeapp.repositories.ProductRepository;
 import com.store.storeapp.services.impls.ProductServiceImpl;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.context.annotation.Import;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,14 +23,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@ExtendWith(SpringExtension.class)
-public class ProductServiceImplTest {
+@Import(ProductServiceImpl.class)
+public class ProductServiceTest {
+    @InjectMocks
+    private ProductServiceImpl service;
 
     @Mock
     private ProductRepository mockedRepository;
-
-    @InjectMocks
-    private ProductServiceImpl service;
 
     private List<Product> products = Arrays.asList(
             new Product(1, "Product 1", 10.0, true),
