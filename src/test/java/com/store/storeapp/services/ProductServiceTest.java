@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.context.annotation.Import;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@Import(ProductServiceImpl.class)
 public class ProductServiceTest {
     @InjectMocks
     private ProductServiceImpl service;
