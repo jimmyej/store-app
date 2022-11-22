@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/products/v1")
 public class ProductController {
     private static final String ACTIVE = "Active";
     private static final String INACTIVE = "Inactive";
