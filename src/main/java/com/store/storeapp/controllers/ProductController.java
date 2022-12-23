@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/products/v1")
 public class ProductController {
     private static final String ACTIVE = "Active";
     private static final String INACTIVE = "Inactive";
@@ -21,6 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping(value = "")
     ResponseEntity<List<Product>> getProducts(){
         try{
@@ -37,6 +39,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/{id}")
     ResponseEntity<Product> getProductById(@PathVariable Integer id){
         try {
@@ -54,6 +57,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "")
     ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
@@ -66,6 +70,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "")
     ResponseEntity<Product> updateProduct(@RequestBody Product product){
         try {
@@ -78,11 +83,12 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     ResponseEntity<Boolean> deleteProduct(@PathVariable Integer id){
         try {
             boolean deleted = service.deleteProductById(id);
-            log.info("Product {id} deleted", id);
+            log.info("Product {} deleted", id);
             return new ResponseEntity<>(deleted, HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
             log.error("Error while deleting product {}", id);
@@ -90,6 +96,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/actives/{isActive}")
     ResponseEntity<List<Product>> getActiveProducts(@PathVariable boolean isActive){
         try {
