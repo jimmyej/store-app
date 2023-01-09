@@ -15,6 +15,14 @@ public class UserModalDetails implements UserDetails {
         this.user = user;
     }
 
+    public int getUserId(){
+        return user.getUserId();
+    }
+
+    public String getEmail(){
+        return user.getEmail();
+    }
+
     @Override
     public String getUsername() {
         return user.getUsername();
