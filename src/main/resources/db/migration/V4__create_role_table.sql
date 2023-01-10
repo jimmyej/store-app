@@ -1,4 +1,4 @@
-CREATE TABLE  IF NOT EXISTS storedb.roles (
+CREATE TABLE  IF NOT EXISTS public.roles (
 	role_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	role_name varchar(15) NOT NULL,
 	status bool NOT NULL DEFAULT true,

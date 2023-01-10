@@ -1,6 +1,5 @@
 package com.store.storeapp.controllers;
 
-import com.store.storeapp.configurations.AuthTokenFilter;
 import com.store.storeapp.configurations.JwtUtils;
 import com.store.storeapp.entities.Role;
 import com.store.storeapp.entities.User;

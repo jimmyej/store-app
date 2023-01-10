@@ -19,7 +19,6 @@ public class SignupRequest {
     @Size(min = 3, max = 10)
     private String username;
     @NotBlank
-    //@Size(min = 10, max = 50)
     private String password;
     @NotBlank
     @Size(max = 100)

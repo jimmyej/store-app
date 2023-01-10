@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+
+  postgres:
+    image: postgres:10.20-alpine
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "public"
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - storeapp-private-network
+    restart: unless-stopped
+
+  storeapp-backend:
+    image: jimmyej/store-core:1.0
+    ports:
+      - "9090:9090"
+    depends_on:
+      - postgres
+    networks:
+      - storeapp-private-network
+
+networks:
+  storeapp-private-network:
+    driver: bridge
+
+volumes:
+  postgres:
