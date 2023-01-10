@@ -1,6 +1,5 @@
 package com.store.storeapp.controllers;
 
-import com.store.storeapp.entities.Product;
 import com.store.storeapp.entities.Role;
 import com.store.storeapp.entities.User;
 import com.store.storeapp.models.UserModel;

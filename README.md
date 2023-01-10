@@ -47,10 +47,6 @@ To install the application dependencies run the following maven command:
 ```sh
 mvn clean install
 ```
-- For Dev or Prod env:
-```sh
-mvn clean package -DskipTests
-```
 
 To collect the code coverage run the following Maven command:
 
@@ -65,7 +61,7 @@ mvn clean package -DskipTests
 ```
 2. build the application image
 ```shell
-docker build -t store-core:2.1 .
+docker build -t jimmyej/store-core:1.0 .
 ```
 3. startup the containers with docker-compose.yml file
 ```shell

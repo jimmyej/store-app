@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "public"
     volumes:
-      -   postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   storeapp-backend:
-    image: store-core:2.1
+    image: jimmyej/store-core:1.0
     ports:
       - "9090:9090"
     depends_on:
