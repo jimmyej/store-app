@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,4 +17,6 @@ public class UserInfoResponse {
     private String username;
     private String email;
     private List<String> roles;
+    private String token;
+    private Date expiresAt;
 }
