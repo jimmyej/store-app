@@ -12,10 +12,10 @@ This Microservice contains the following endpoints:
 ### Setup
 1. Create a application-local.yml file and add the following configuration.
     
-    ```sh
+    ```properties
     spring:
       datasource:
-        url: jdbc:postgresql://localhost:5432/postgres
+        url: jdbc:postgresql://postgres:5432/postgres
         username: <your username>
         password: <your password>
     
@@ -25,7 +25,16 @@ This Microservice contains the following endpoints:
             ddl-auto: create
             default_schema: storedb
     ```
-2. add the following environment variable in your IDE run configuration window.
+2. add postgres host in the OS
+   ```sh
+   /etc/hosts (in Mac OS)
+   127.0.0.1	postgres
+   ```
+   ```sh
+   C:\Windows\System32\drivers\etc\hosts (in Windows OS)
+   127.0.0.1	postgres
+   ```
+3. add the following environment variable in your IDE run configuration window.
 
     ```sh
     spring.profiles.active=local
@@ -34,6 +43,7 @@ This Microservice contains the following endpoints:
 
 To install the application dependencies run the following maven command:
 
+- For local env:
 ```sh
 mvn clean install
 ```
@@ -44,3 +54,16 @@ To collect the code coverage run the following Maven command:
 mvn clean verify -Dspring.profiles.active=test
 ```
 
+### Prepare to Dev or Prod Env
+1. package the application
+```shell
+mvn clean package -DskipTests
+```
+2. build the application image
+```shell
+docker build -t jimmyej/store-core:1.0 .
+```
+3. startup the containers with docker-compose.yml file
+```shell
+docker-compose up
+```

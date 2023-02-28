@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -26,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductController.class)
+@WithMockUser(username = "user", authorities={"ROLE_USER", "ROLE_ADMIN"})
 class ProductControllerTest {
 
     @Autowired
@@ -44,7 +47,7 @@ class ProductControllerTest {
 
     private List<Product> inactiveProducts = products.stream().filter(f -> !f.isActive()).collect(Collectors.toList());
 
-    private static final String BASE_PATH = "/api/v1/products";
+    private static final String BASE_PATH = "/api/products/v1";
 
     @BeforeEach
     void setUp() {
@@ -110,20 +113,22 @@ class ProductControllerTest {
 
         when(productService.createProduct(any(Product.class))).thenReturn(products.get(0));
         RequestBuilder request = post(BASE_PATH)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .accept(MediaType.APPLICATION_JSON).content(newProductJson)
                 .contentType(MediaType.APPLICATION_JSON);
-
         MvcResult result = mvc.perform(request).andReturn();
         assertNotNull(result);
         assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus());
     }
 
     @Test
+    @WithMockUser(username = "admin", authorities={"ROLE_ADMIN"})
     void createProduct_serverError() throws Exception {
         String newProductJson = "{\"name\":\"Soda CocaCola 1.5L\",\"price\":8.0,\"active\":true}";
 
         when(productService.createProduct(any(Product.class))).thenThrow(new RuntimeException());
         RequestBuilder request = post(BASE_PATH)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .accept(MediaType.APPLICATION_JSON).content(newProductJson)
                 .contentType(MediaType.APPLICATION_JSON);;
 
@@ -138,6 +143,7 @@ class ProductControllerTest {
 
         when(productService.updateProduct(any(Product.class))).thenReturn(products.get(0));
         RequestBuilder request = put(BASE_PATH)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .accept(MediaType.APPLICATION_JSON).content(newProductJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -152,6 +158,7 @@ class ProductControllerTest {
 
         when(productService.updateProduct(any(Product.class))).thenThrow(new RuntimeException());
         RequestBuilder request = put(BASE_PATH)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .accept(MediaType.APPLICATION_JSON).content(newProductJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -163,7 +170,8 @@ class ProductControllerTest {
     @Test
     void deleteProduct_success() throws Exception {
         when(productService.deleteProductById(1)).thenReturn(true);
-        RequestBuilder request = delete(BASE_PATH.concat("/1"));
+        RequestBuilder request = delete(BASE_PATH.concat("/1"))
+                .with(SecurityMockMvcRequestPostProcessors.csrf());
         MvcResult result = mvc.perform(request).andReturn();
         assertNotNull(result);
         assertEquals(HttpStatus.NO_CONTENT.value(), result.getResponse().getStatus());
@@ -172,7 +180,8 @@ class ProductControllerTest {
     @Test
     void deleteProduct_serverError() throws Exception {
         when(productService.deleteProductById(1)).thenThrow(new RuntimeException());
-        RequestBuilder request = delete(BASE_PATH.concat("/1"));
+        RequestBuilder request = delete(BASE_PATH.concat("/1"))
+                .with(SecurityMockMvcRequestPostProcessors.csrf());
         MvcResult result = mvc.perform(request).andReturn();
         assertNotNull(result);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
