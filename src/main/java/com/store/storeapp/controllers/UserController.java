@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,16 +80,18 @@ public class UserController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserModalDetails userDetails = (UserModalDetails) authentication.getPrincipal();
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        String token = jwtUtils.generateTokenFromUsername(userDetails.getUsername());
+        Date expiresAt = jwtUtils.getExpirationDateFromToken(token);
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+        return ResponseEntity.ok()
                 .body(new UserInfoResponse(userDetails.getUserId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
-                        roles));
+                        roles, token, expiresAt));
     }
 
     @PostMapping("/signup")
